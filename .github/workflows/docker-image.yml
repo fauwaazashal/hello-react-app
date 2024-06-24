@@ -26,4 +26,4 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         push: true
-        tags: ${{ secrets.DOCKER_USERNAME }}/your-repo-name:latest
+        tags: ${{ secrets.DOCKER_USERNAME }}/gitactions-app:latest
