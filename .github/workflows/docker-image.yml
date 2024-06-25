@@ -56,8 +56,8 @@ jobs:
         ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_INSTANCE_IP }} << 'EOF'
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
           docker pull $DOCKER_IMAGE
-          docker stop my-container || true
-          docker rm my-container || true
-          docker run -d --name my-container -p 80:80 $DOCKER_IMAGE
+          docker stop test || true
+          docker rm test || true
+          docker run -d --name test -p 80:80 $DOCKER_IMAGE
         EOF
 
