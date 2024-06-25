@@ -46,7 +46,8 @@ jobs:
       run: |
         aws ec2 describe-instances --filters "Name=tag:Name,Values=my-ec2-instance" --query "Reservations[*].Instances[*].InstanceId" --output text > instance_id.txt
         INSTANCE_ID=$(cat instance_id.txt)
-        ssh -o StrictHostKeyChecking=no -i /home/ubuntu/.ssh/id_rsa.pub ubuntu@$(aws ec2 describe-instances --instance-ids $INSTANCE_ID --query "Reservations[*].Instances[*].PublicIpAddress" --output text) << EOF
+        PUBLIC_IP=$(aws ec2 describe-instances --instance-ids $INSTANCE_ID --query "Reservations[*].Instances[*].PublicIpAddress" --output text)
+        ssh -o StrictHostKeyChecking=no -i /home/ubuntu/.ssh/id_rsa ubuntu@${{ secrets.EC2_INSTANCE_IP }} << EOF
           docker pull ${{ secrets.DOCKER_USERNAME }}/my-app:latest
           docker stop my-app || true
           docker rm my-app || true
