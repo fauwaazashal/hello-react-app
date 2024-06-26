@@ -1,7 +1,6 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  creationTimestamp: null
   labels:
     app: react-dep
   name: react-dep
@@ -10,7 +9,6 @@ spec:
   selector:
     matchLabels:
       app: react-dep
-  strategy: {}
   template:
     metadata:
       creationTimestamp: null
@@ -18,10 +16,8 @@ spec:
         app: react-dep
     spec:
       containers:
-      - image: farhat18/react-dep:29
+      - image: fauwaaz/my-app:latest
         name: react-dep
-        resources: {}
-status: {}
 ---
 apiVersion: v1
 kind: Service
