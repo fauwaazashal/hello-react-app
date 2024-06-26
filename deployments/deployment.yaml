@@ -1,0 +1,35 @@
+piVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: react-dep
+  name: react-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: react-dep
+  template:
+    metadata:
+      labels:
+        app: react-dep
+    spec:
+      containers:
+      - image: fauwaaz/my-app:${BUILD_NUMBER}
+        name: react-dep
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: react-dep
+  labels:
+    app: react-dep
+spec:
+  type: NodePort
+  ports:
+  - nodePort: 30001
+    port: 80
+    targetPort: 3000
+  selector:
+    app: react-dep
+
