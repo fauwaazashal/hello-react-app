@@ -15,7 +15,7 @@ spec:
         app: react-dep
     spec:
       containers:
-      - image: fauwaaz/my-app:latest
+      - image: fauwaaz/my-app:${BUILD_NUMBER}
         name: react-dep
 ---
 apiVersion: v1
@@ -32,3 +32,4 @@ spec:
     targetPort: 3000
   selector:
     app: react-dep
+
