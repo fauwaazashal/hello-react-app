@@ -38,7 +38,7 @@ jobs:
 
     - name: Update Kubernetes deployment
       run: |
-        sed -i 's|image: .*|image: '"${{ secrets.DOCKER_USERNAME }}/my-app:latest"'|' /home/ubuntu/actions-runner/_work/hello-react-app/hello-react-app/deployment.yaml
+        sed -i 's|image: .*|image: '"${{ secrets.DOCKER_USERNAME }}/my-app::${{ github.run_number }}"'|' /home/ubuntu/actions-runner/_work/hello-react-app/hello-react-app/deployment.yaml
 
     - name: Commit changes
       run: |
