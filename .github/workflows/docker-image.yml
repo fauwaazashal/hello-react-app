@@ -1,4 +1,4 @@
-name: Deploy Docker Image to EC2
+name: Deploy Docker Image to Kubernetes
 
 on:
   push:
@@ -28,7 +28,7 @@ jobs:
         docker tag my-app:latest ${{ secrets.DOCKER_USERNAME }}/my-app:latest
         docker push ${{ secrets.DOCKER_USERNAME }}/my-app:latest
 
-  deploy:
+  update-deployment:
     runs-on: self-hosted  # Replace with the label of your self-hosted runner
     needs: build
 
@@ -36,20 +36,15 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Set up AWS CLI
+    - name: Update Kubernetes deployment
       run: |
-        aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws configure set region ${{ secrets.AWS_REGION }}  # Replace with your AWS region
+        sed -i 's|image: .*|image: '"${{ secrets.DOCKER_USERNAME }}/my-app:latest"'|' /home/ubuntu/actions-runner/_work/hello-react-app/hello-react-app/deployment.yaml
 
-    - name: Deploy to EC2
+    - name: Commit changes
       run: |
-        aws ec2 describe-instances --filters "Name=tag:Name,Values=my-ec2-instance" --query "Reservations[*].Instances[*].InstanceId" --output text > instance_id.txt
-        INSTANCE_ID=$(cat instance_id.txt)
-        PUBLIC_IP=$(aws ec2 describe-instances --instance-ids $INSTANCE_ID --query "Reservations[*].Instances[*].PublicIpAddress" --output text)
-        ssh -o StrictHostKeyChecking=no -i /home/ubuntu/.ssh/id_rsa ubuntu@${{ secrets.EC2_INSTANCE_IP }} << EOF
-          docker pull ${{ secrets.DOCKER_USERNAME }}/my-app:latest
-          docker stop my-app || true
-          docker rm my-app || true
-          docker run -d --name my-app -p 80:3000 ${{ secrets.DOCKER_USERNAME }}/my-app:latest
-        EOF
+        git config --global --add safe.directory /home/ubuntu/actions-runner/_work/hello-react-app/hello-react-app
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+        git add /home/ubuntu/actions-runner/_work/hello-react-app/hello-react-app/deployment.yaml
+        git commit -m 'Update Docker image to ${{ secrets.DOCKER_USERNAME }}/my-app:latest'
+        git push
