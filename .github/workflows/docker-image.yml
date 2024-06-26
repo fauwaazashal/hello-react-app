@@ -41,7 +41,7 @@ jobs:
 
     - name: Update Kubernetes deployment
       run: |
-        sed -i 's|image: .*|image: '"${{ secrets.DOCKER_USERNAME }}/my-app:latest"'|' /home/ubuntu/actions-runner/_work/hello-react-app/hello-react-app/deployment.yaml
+        sed -i 's|image: .*|image: '"${{ secrets.DOCKER_USERNAME }}/my-app::${{ github.run_number }}|g' /home/ubuntu/actions-runner/_work/hello-react-app/hello-react-app/deployment.yaml
 
     - name: Debug - Show deployment.yaml after update
       run: cat /home/ubuntu/actions-runner/_work/hello-react-app/hello-react-app/deployment.yaml
