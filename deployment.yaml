@@ -11,7 +11,6 @@ spec:
       app: react-dep
   template:
     metadata:
-      creationTimestamp: null
       labels:
         app: react-dep
     spec:
