@@ -1,11 +1,11 @@
 steps:
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'asia-south1-docker.pkg.dev/instant-medium-424313-b9/testing-docker-repo/my-image:latest', '.']
+    args: ['build', '-t', 'australia-southeast1-docker.pkg.dev/instant-medium-424313-b9/testing-docker-repo/my-image:latest', '.']
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'asia-south1-docker.pkg.dev/instant-medium-424313-b9/testing-docker-repo/my-image:latest']
+    args: ['push', 'australia-southeast1-docker.pkg.dev/instant-medium-424313-b9/testing-docker-repo/my-image:latest']
 
 images:
-  - 'asia-south1-docker.pkg.dev/instant-medium-424313-b9/testing-docker-repo/my-image:latest'
+  - 'australia-southeast1-docker.pkg.dev/instant-medium-424313-b9/testing-docker-repo/my-image:latest'
 
 options:
   logging: 'CLOUD_LOGGING_ONLY'
